@@ -1,5 +1,6 @@
 import autograd.numpy as np
 from autograd import jacobian
+from W.W import W
 
 # state is a N x D vector of states for each chain
 # etas is a N x 2 vector of natural parameters for the path; etas[:, 0] are the reference weights, etas[:, 1] are the target weights
@@ -190,3 +191,19 @@ def gradient_cov_segments(K):
     def W_p(phi, beta, X=None, args=None):
         return gradient_cov(phi, beta, X, args, W_endpoints=W_endpoints, K=K)
     return W_p
+
+class W_mvn(W):
+    def __init__(self, segments):
+        self.segments = segments
+
+    def kernels(self):
+        return kernels
+
+    def W_eta_segments(self):
+        return W_eta_segments(self.segments)
+
+    def loss_KL_segments(self):
+        return loss_KL_segments(self.segments)
+
+    def gradient_cov_segments(self):
+        return gradient_cov_segments(self.segments)

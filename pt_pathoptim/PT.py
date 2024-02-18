@@ -6,7 +6,7 @@ from scipy.interpolate import PchipInterpolator
 import copy
 
 class DEO():
-
+    # Implements the DEO  PT algorithm
     def __init__(self, kernels, W, gradient_fn, W_KL, phi, args,
                  annealing_pars,num_extra_params=0, n_expl=1, optimizer=Adagrad(lr=0.05)):
         self.num_extra_params = num_extra_params
@@ -192,7 +192,7 @@ class DEO():
         self.etas = self.compute_etas()
 
     def simulate(self, iters, init_state, burn_in=1000, K=100, checkpoint_iter=1000,
-                 KL=False, optim=True, optim_iters=1000,
+                 optim=True, optim_iters=1000,
                  savepath=None, filename=None, tune=True, reversible=False):
 
         # In here need to handle storing of states and truncation matrix and update of kernel results

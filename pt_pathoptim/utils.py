@@ -7,20 +7,36 @@ import copy
 import sys
 
 class Covariance():
+    """
+    Class to calculate covariance.
+    """
 
     def __init__(self):
+        """
+        Initialize the Covariance object.
+        """
         self.meanx = 0
         self.meany = 0
         self.C = 0
         self.n = 0
 
     def reset_cov(self):
+        """
+        Reset the covariance values.
+        """
         self.meanx = 0
         self.meany = 0
         self.C = 0
         self.n = 0
 
     def update_cov(self, x, y):
+        """
+        Update the covariance based on new x and y values.
+
+        Args:
+            x: The x value.
+            y: The y value.
+        """
         self.n += 1
         dx = x - self.meanx
         self.meanx += dx / self.n
@@ -28,17 +44,28 @@ class Covariance():
         self.C += dx * (y - self.meany)
 
     def sample_covariance(self):
-        return self.C/(self.n - 1)
+        """
+        Calculate the sample covariance.
+
+        Returns:
+            The sample covariance.
+        """
+        return self.C / (self.n - 1)
 
     def pop_covariance(self):
-        return self.C/self.n
+        """
+        Calculate the population covariance.
+
+        Returns:
+            The population covariance.
+        """
+        return self.C / self.n
 
 # Functions for gradient calculation
 def compute_log_ratio(W, X, phi, betas, args):
     return -W(phi, betas[0:-1], X=X[1::], args=args) - W(phi, betas[1::], X=X[0:-1], args=args) + W(phi, betas[0:-1], X=X[0:-1], args=args) + W(phi, betas[1::], X=X[1::], args=args)
 
 def swap_back(current_state, is_swapped, N):
-    # Necessary for covariance computation
     r = np.arange(N - 1)
     r_s = r[is_swapped == True]
     temp = copy.deepcopy(current_state)

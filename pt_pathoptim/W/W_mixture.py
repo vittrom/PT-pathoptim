@@ -1,8 +1,6 @@
 import autograd.numpy as np
-import copy
-import sys
 from autograd import jacobian
-
+from W.W import W
 
 # state is a N x D vector of states for each chain
 # in the mixture model, the state is of the form [w1, w2, th1, th2, sig1, sig2, z1, z2, z3, z4... zN]
@@ -368,3 +366,19 @@ def gradient_cov_segments(K):
         return gradient_cov(phi, beta, X, args, W_endpoints=W_endpoints, K=K)
 
     return W_p
+
+class W_mixture(W):
+    def __init__(self, segments):
+        self.segments = segments
+
+    def kernels(self):
+        return kernels
+
+    def W_eta_segments(self):
+        return W_eta_segments(self.segments)
+
+    def loss_KL_segments(self):
+        return loss_KL_segments(self.segments)
+
+    def gradient_cov_segments(self):
+        return gradient_cov_segments(self.segments)
